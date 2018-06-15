@@ -4,7 +4,7 @@ description: Configuration affecting traffic routing
 location: https://istio.io/docs/reference/config/istio.networking.v1alpha3.html
 layout: protoc-gen-docs
 generator: protoc-gen-docs
-number_of_entries: 45
+number_of_entries: 46
 ---
 <p>Configuration affecting traffic routing. Here are a few terms useful to define
 in the context of traffic routing.</p>
@@ -1495,7 +1495,7 @@ independent of sourceLabels.</p>
 </section>
 <h2 id="HTTPRedirect">HTTPRedirect</h2>
 <section>
-<p>HTTPRedirect can be used to send a 302 redirect response to the caller,
+<p>HTTPRedirect can be used to send specified redirect response to the caller,
 where the Authority/Host and the URI in the response can be swapped with
 the specified values. For example, the following rule redirects
 requests for /v1/getProductRatings API on the ratings service to
@@ -1515,6 +1515,7 @@ spec:
   redirect:
     uri: /v1/bookRatings
     authority: newratings.default.svc.cluster.local
+    type: FOUND
   ...
 </code></pre>
 
@@ -1543,6 +1544,64 @@ request URI being matched as an exact path or prefix.</p>
 <td>
 <p>On a redirect, overwrite the Authority/Host portion of the URL with
 this value.</p>
+
+</td>
+</tr>
+<tr id="HTTPRedirect-type">
+<td><code>type</code></td>
+<td><code><a href="#HTTPRedirect-RedirectType">HTTPRedirect.RedirectType</a></code></td>
+<td>
+<p>Optional: Specify HTTP redirect response type. Default is FOUND (HTTP 302).</p>
+
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<h2 id="HTTPRedirect-RedirectType">HTTPRedirect.RedirectType</h2>
+<section>
+<p>HTTP Redirect response codes</p>
+
+<table class="enum-values">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr id="HTTPRedirect-RedirectType-MOVED_PERMANENTLY">
+<td><code>MOVED_PERMANENTLY</code></td>
+<td>
+<p>Moved Permanently HTTP Status Code - 301.</p>
+
+</td>
+</tr>
+<tr id="HTTPRedirect-RedirectType-FOUND">
+<td><code>FOUND</code></td>
+<td>
+<p>Found HTTP Status Code - 302.</p>
+
+</td>
+</tr>
+<tr id="HTTPRedirect-RedirectType-SEE_OTHER">
+<td><code>SEE_OTHER</code></td>
+<td>
+<p>See Other HTTP Status Code - 303.</p>
+
+</td>
+</tr>
+<tr id="HTTPRedirect-RedirectType-TEMPORARY_REDIRECT">
+<td><code>TEMPORARY_REDIRECT</code></td>
+<td>
+<p>Temporary Redirect HTTP Status Code - 307.</p>
+
+</td>
+</tr>
+<tr id="HTTPRedirect-RedirectType-PERMANENT_REDIRECT">
+<td><code>PERMANENT_REDIRECT</code></td>
+<td>
+<p>Permanent Redirect HTTP Status Code - 308.</p>
 
 </td>
 </tr>
@@ -1702,7 +1761,7 @@ service version determine the proportion of traffic it receives.</p>
 <p>A http rule can either redirect or forward (default) traffic. If
 traffic passthrough option is specified in the rule,
 route/redirect will be ignored. The redirect primitive can be used to
-send a HTTP 302 redirect to a different URI or Authority.</p>
+send HTTP redirect to a different URI or Authority.</p>
 
 </td>
 </tr>

@@ -322,12 +322,20 @@ func translateRoute(in *networking.HTTPRoute,
 	}
 
 	if redirect := in.Redirect; redirect != nil {
+		responseCodes := map[networking.HTTPRedirect_RedirectType]route.RedirectAction_RedirectResponseCode {
+			networking.HTTPRedirect_MOVED_PERMANENTLY: route.RedirectAction_MOVED_PERMANENTLY,
+			networking.HTTPRedirect_FOUND: route.RedirectAction_FOUND,
+			networking.HTTPRedirect_SEE_OTHER: route.RedirectAction_SEE_OTHER,
+			networking.HTTPRedirect_TEMPORARY_REDIRECT: route.RedirectAction_TEMPORARY_REDIRECT,
+			networking.HTTPRedirect_PERMANENT_REDIRECT: route.RedirectAction_PERMANENT_REDIRECT,
+		}
 		out.Action = &route.Route_Redirect{
 			Redirect: &route.RedirectAction{
 				HostRedirect: redirect.Authority,
 				PathRewriteSpecifier: &route.RedirectAction_PathRedirect{
 					PathRedirect: redirect.Uri,
 				},
+				ResponseCode: responseCodes[redirect.Type],
 			}}
 	} else {
 		action := &route.RouteAction{
